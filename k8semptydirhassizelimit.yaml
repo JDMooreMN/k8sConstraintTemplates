@@ -1,6 +1,9 @@
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
+  annotations:
+    metadata.gatekeeper.sh/title: Empty Directory has Size Limit
+    metadata.gatekeeper.sh/version: 1.0.5
   name: k8semptydirhassizelimit
 spec:
   crd:
