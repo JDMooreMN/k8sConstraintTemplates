@@ -4,6 +4,10 @@ metadata:
   annotations:
     metadata.gatekeeper.sh/title: Empty Directory has Size Limit
     metadata.gatekeeper.sh/version: 1.0.5
+    description: >-
+      Requires that any `emptyDir` volumes specify a `sizeLimit`. Optionally,
+      a `maxSizeLimit` parameter can be supplied in the constraint to specify a maximum
+      allowable size limit.
   name: k8semptydirhassizelimit
 spec:
   crd:
@@ -11,8 +15,8 @@ spec:
       names:
         kind: K8sEmptyDirHasSizeLimit
       validation:
-        legacySchema: true
         openAPIV3Schema:
+          type: object
           properties:
             exemptVolumesRegex:
               description: Exempt Volume names as regex match.
@@ -22,10 +26,10 @@ spec:
             maxSizeLimit:
               description: When set, the declared size limit for each volume must
                 be less than `maxSizeLimit`.
-              type: string
-          type: object
+              type: string   
   targets:
-  - rego: |
+  - target: admission.k8s.gatekeeper.sh
+    rego: |
       package k8semptydirhassizelimit
 
       violation[{"msg": msg}] {
@@ -114,4 +118,3 @@ spec:
       has_regex_match(subject, exempt) {
         regex.match(exempt, subject)
       }
-    target: admission.k8s.gatekeeper.sh
