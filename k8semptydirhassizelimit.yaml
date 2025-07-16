@@ -23,6 +23,7 @@ spec:
               items:
                 type: string
               type: array
+              default: []
             maxSizeLimit:
               description: When set, the declared size limit for each volume must
                 be less than `maxSizeLimit`.
